@@ -1,0 +1,14 @@
+﻿<Window x:Name="Results_WIndow" x:Class="SQL.QueryResults"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Query Results" Height="349.791" Width="301.991">
+    <Grid>
+        <Grid Margin="10,10,10,10">
+            <Label Content="&#xD;&#xA;&#xD;&#xA;"  Margin="0,0,0,0"   BorderBrush="Gray" Background ="White" BorderThickness  ="1"/>
+        </Grid>
+
+    </Grid>
+</Window>
