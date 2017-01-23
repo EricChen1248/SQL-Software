@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Query" Height="416.509" Width="573.574" WindowStartupLocation="CenterScreen" Background="Black">
+        Title="Query" Height="756.935" Width="843.515" WindowStartupLocation="CenterScreen" Background="Black">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>

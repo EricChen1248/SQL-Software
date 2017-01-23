@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Data;
+using System.Diagnostics;
 
 namespace SQL
 {
@@ -22,51 +23,59 @@ namespace SQL
 		{
 			InitializeComponent();
 			InitReservedWords();
-			SQLTxt.AppendText("Select ");
+			SQLTxt.AppendText("Type Here");
 			FileLocationTxt.Text = AppDomain.CurrentDomain.BaseDirectory + "Table1.csv";
 		}
 
 		private void InitReservedWords()
 		{
-			Keywords = new []{ "select ", "from ", "join ", "on ", "group by ", "if ", "desc ", "where "};
-			Types = new[] {"int ", "date ", "float ", "varchar ", "byte "};
-			Expressions = new[] {"count", "avg", "max", "min"};
+			Keywords = new []{ "select", "from", "join", "on", "group by", "if", "desc", "where"};
+			Types = new[] {"int", "date", "float", "varchar", "byte"};
+			Expressions = new[] {"count", "avg ", "max ", "min"};
 			SQLTxt.TextChanged += SQLTxt_OnTextChanged; 
 		}
-		
 		private void SQLTxt_OnTextChanged(object sender, TextChangedEventArgs e)
 		{
-			if (SQLTxt.CaretPosition.Paragraph == null) return;
-			var start = SQLTxt.CaretPosition.Paragraph.ContentStart;
-			var end = SQLTxt.CaretPosition.Paragraph.ContentEnd;
-			var range = new TextRange(start, end);
-			var text = range.Text;
-			foreach (var keyword in Keywords)
+			var currentPosition = SQLTxt.CaretPosition;
+			var start = currentPosition?.GetNextInsertionPosition(LogicalDirection.Backward);
+			if (start == null)
+				return;
+
+			var currentChar = GetCurrentChar(SQLTxt, start, LogicalDirection.Backward);
+			while (currentChar != " " && currentChar != "")
 			{
-				var indexOf = text.ToLower().IndexOf(keyword, StringComparison.Ordinal);
-				if (indexOf == -1) continue;
-				var expressionRange = new TextRange(range.Start.GetPositionAtOffset(indexOf), range.Start.GetPositionAtOffset(indexOf + keyword.Length));
-				expressionRange.ApplyPropertyValue(ForegroundProperty, "#569cd6");
-				SQLTxt.Selection.ApplyPropertyValue(ForegroundProperty, Brushes.White);
+				if (start == null) continue;
+				start = start.GetNextInsertionPosition(LogicalDirection.Backward);
+				currentChar = GetCurrentChar(SQLTxt, start, LogicalDirection.Backward);
 			}
-			foreach (var expression in Expressions)
-			{
-				var indexOf = text.ToLower().IndexOf(expression, StringComparison.Ordinal);
-				if (indexOf == -1) continue;
-				var keywordRange = new TextRange(range.Start.GetPositionAtOffset(indexOf), range.Start.GetPositionAtOffset(indexOf + expression.Length));
-				keywordRange.ApplyPropertyValue(ForegroundProperty, Brushes.OrangeRed);
+
+			if (start != null) SQLTxt.Selection.Select(start, currentPosition);
+
+			var text = SQLTxt.Selection.Text.TrimEnd(' ');
+			Debug.WriteLine(text);
+
+			if (Keywords.Any(x => x == text.ToLower()))
+				 SQLTxt.Selection.ApplyPropertyValue(ForegroundProperty, "#569cd6");
+			else if (Expressions.Any(x => x == text.ToLower()))
+				SQLTxt.Selection.ApplyPropertyValue(ForegroundProperty,Brushes.OrangeRed);
+			else if (Types.Any(x => x == text.ToLower()))
+				SQLTxt.Selection.ApplyPropertyValue(ForegroundProperty, "#41C9B0");
+			else
 				SQLTxt.Selection.ApplyPropertyValue(ForegroundProperty, Brushes.White);
-			}
-			foreach (var type in Types)
-			{
-				var indexOf = text.ToLower().IndexOf(type, StringComparison.Ordinal);
-				if (indexOf == -1) continue;
-				var typeRange = new TextRange(range.Start.GetPositionAtOffset(indexOf), range.Start.GetPositionAtOffset(indexOf + type.Length));
-				typeRange.ApplyPropertyValue(ForegroundProperty, "#41C9B0");
-				SQLTxt.Selection.ApplyPropertyValue(ForegroundProperty, Brushes.White);
-			}
-			//range.ApplyPropertyValue(TextElement.ForegroundProperty , Brushes.Blue);
+
+			SQLTxt.CaretPosition = currentPosition;
+			SQLTxt.Selection.ApplyPropertyValue(ForegroundProperty, Brushes.White);
+			
 			SQLTxt.Foreground = Brushes.White;
+		}
+
+		private static string GetCurrentChar(RichTextBox richTextBox, TextPointer pointer, LogicalDirection direction)
+		{
+			var textPointer = pointer.GetNextInsertionPosition(direction);
+			if (textPointer == null)
+				return "";
+			richTextBox.Selection.Select(pointer,textPointer);
+			return richTextBox.Selection.Text.Length == 0 ? "" : richTextBox.Selection.Text[0].ToString();
 		}
 
 		private void ExecuteBtn_Click(object sender, System.Windows.RoutedEventArgs e)
