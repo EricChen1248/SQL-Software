@@ -51,7 +51,7 @@ namespace SQL
 
 			if (start != null) SQLTxt.Selection.Select(start, currentPosition);
 
-			var text = SQLTxt.Selection.Text.TrimEnd(' ');
+			var text = SQLTxt.Selection.Text.TrimEnd(' ').TrimStart('\r','\n');
 			Debug.WriteLine(text);
 
 			if (Keywords.Any(x => x == text.ToLower()))
@@ -94,16 +94,17 @@ namespace SQL
 		{
 			var keywords = new[] {"from", "as"};
 			var columns = new List<string>();
-			string nextWord;
-			var alias = "";
-
-			while (!keywords.Contains((nextWord = text.Dequeue()).ToLower()))
-				columns.Add(nextWord);
-			if (nextWord.ToLower() == "as")
+			var alias = new List<string>();
+			var nextWord = text.Dequeue();
+			do
 			{
-				alias = text.Dequeue();
+				if (!keywords.Contains(nextWord.ToLower()))
+					columns.Add(nextWord);
+				if (nextWord.ToLower() != "as") continue;
+				alias.Add(text.Dequeue());
 				nextWord = text.Dequeue();
-			}
+			} while (nextWord == ",");
+
 			//Create DataTable
 			if (nextWord.ToLower() == "from")
 			{
