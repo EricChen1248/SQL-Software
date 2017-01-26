@@ -54,8 +54,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Query Results.xaml.cs">
-      <DependentUpon>Query Results.xaml</DependentUpon>
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="Results.xaml.cs">
+      <DependentUpon>Results.xaml</DependentUpon>
     </Compile>
     <Page Include="Query.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -70,7 +71,7 @@
       <DependentUpon>Query.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Query Results.xaml">
+    <Page Include="Results.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

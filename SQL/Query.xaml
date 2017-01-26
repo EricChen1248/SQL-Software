@@ -22,7 +22,7 @@
         <Button x:Name="PreviewBtn" Content="Preview" HorizontalAlignment="Left" Margin="10,63.98,0,0" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Width="124" Height="20" Foreground="White" BorderBrush="#FFB1B1B1" BorderThickness="1" FontWeight="SemiBold" Background = "Black" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" />
         <Button x:Name="DropBtn" Content="Drop Table" HorizontalAlignment="Left" Margin="10,86.98,0,0" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Width="124" Height="20" Foreground="White" BorderBrush="#FFB1B1B1" BorderThickness="1" FontWeight="SemiBold" Background = "Black" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         <Button x:Name="ExecuteBtn" Content="Execute Query" HorizontalAlignment="Left" Margin="10,0,0,10.238" Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" Width="124" Height="27" Foreground="White" BorderBrush="#FFB1B1B1" BorderThickness="1" FontWeight="SemiBold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Black" Click="ExecuteBtn_Click" />
-        <RichTextBox x:Name="SQLTxt" Grid.Column="1" Margin="9.98,9.98,9.723,10.238" Grid.Row="1" Foreground="White" FontSize="15"  FontFamily="Consolas" Block.LineHeight="1" TabIndex="0" AcceptsTab="True" FontWeight="SemiBold" Background="Black" CaretBrush ="#FFB1B1B1">
+        <RichTextBox x:Name="SQLTxt" Grid.Column="1" Margin="9.98,9.98,9.723,10.238" Grid.Row="1" Foreground="White" FontSize="15"  FontFamily="Consolas" Block.LineHeight="1" TabIndex="0" AcceptsTab="True" FontWeight="SemiBold" Background="Black" CaretBrush ="#FFB1B1B1" GotFocus ="SQLTxt_OnGotFocus">
             <FlowDocument>
                 <Paragraph>
                 </Paragraph>
